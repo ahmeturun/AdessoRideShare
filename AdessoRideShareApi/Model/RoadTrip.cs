@@ -13,8 +13,9 @@ namespace AdessoRideShareApi.Model
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
-        [Required]
+        public Guid UserId { get; set; }
         public User User { get; set; }
+
         [Required]
         public Location Source { get; set; }
         [Required]
@@ -23,7 +24,7 @@ namespace AdessoRideShareApi.Model
         public DateTime TripDateTime { get; set; }
         [Required]
         public int TravelerCapacity { get; set; }
-        public ICollection<UserRoadTrip> JoinedTravelers { get; set; }
+        public ICollection<UserRoadTrip> JoinedTravelers { get; set; } = new List<UserRoadTrip>();
         public string Details { get; set; }
         public bool PublishStatus { get; set; }
 

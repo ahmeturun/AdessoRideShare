@@ -27,6 +27,7 @@ namespace AdessoRideShareApi
                 {
                     options.MigrationsAssembly(Assembly.GetExecutingAssembly().FullName);
                 });
+                options.EnableSensitiveDataLogging();
             });
             services.AddControllers();
         }

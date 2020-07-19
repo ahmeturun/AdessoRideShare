@@ -28,13 +28,15 @@ namespace AdessoRideShareApi.DbContexts
             modelBuilder.Entity<RoadTrip>(entity =>
             {
                 entity.HasKey(item => item.Id);
-                entity.HasOne(item => item.User).WithMany();
                 entity.Property(item => item.Source).HasJsonConversion();
                 entity.Property(item => item.Destination).HasJsonConversion();
                 entity.Property(item => item.TripDateTime);
                 entity.Property(item => item.TravelerCapacity);
                 entity.Property(item => item.Details);
                 entity.Property(item => item.PublishStatus);
+                entity.HasOne(item => item.User)
+                    .WithMany(item => item.OwnedRoadTrips)
+                    .HasForeignKey(item => item.UserId);
             });
 
             modelBuilder.Entity<User>().ToTable("User", "test");
@@ -50,11 +52,11 @@ namespace AdessoRideShareApi.DbContexts
             modelBuilder.Entity<UserRoadTrip>()
                 .HasOne(userRoadTrip => userRoadTrip.User)
                 .WithMany(user => user.JoinedRoadTrips)
-                .HasForeignKey(userRoadTrip => userRoadTrip.RoadTripId);
+                .HasForeignKey(userRoadTrip => userRoadTrip.UserId);
             modelBuilder.Entity<UserRoadTrip>()
                 .HasOne(userRoadTrip => userRoadTrip.RoadTrip)
                 .WithMany(roadTrip => roadTrip.JoinedTravelers)
-                .HasForeignKey(userRoadTrip => userRoadTrip.UserId);
+                .HasForeignKey(userRoadTrip => userRoadTrip.RoadTripId);
             base.OnModelCreating(modelBuilder);
         }
     }

@@ -1,10 +1,10 @@
-﻿using AdessoRideShareApi.Model;
+﻿using System;
 
 namespace AdessoRideShareApi.Dto
 {
     public class JoinRoadTripRequest
     {
-        public long RoadTripId { get; set; }
-        public User JoiningUser { get; set; }
+        public Guid RoadTripId { get; set; }
+        public Guid JoiningUserID { get; set; }
     }
 }

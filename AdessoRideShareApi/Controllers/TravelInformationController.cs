@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AdessoRideShareApi.Controllers
@@ -28,30 +29,56 @@ namespace AdessoRideShareApi.Controllers
         }
         [HttpPost]
         [Route("AddRoadTrip")]
-        public RoadTrip AddRoadTrip([FromBody]RoadTrip roadTrip)
+        public async Task<RoadTrip> AddRoadTrip([FromBody]RoadTrip roadTrip)
         {
-            throw new NotImplementedException();
+            var entityContext = roadTripDbContext.Add(roadTrip);
+            await roadTripDbContext.SaveChangesAsync();
+            return entityContext.Entity;
         }
 
         [HttpPut]
         [Route("UpdateRoadTrip")]
-        public RoadTrip UpdateRoadTrip([FromBody]RoadTrip roadTrip)
+        public async Task<RoadTrip> UpdateRoadTrip([FromBody]RoadTrip roadTrip)
         {
-            throw new NotImplementedException();
+            var entityContext = roadTripDbContext.Update(roadTrip);
+            await roadTripDbContext.SaveChangesAsync();
+            return entityContext.Entity;
         }
 
         [HttpPost]
         [Route("JoinRoadTrip")]
-        public void JoinRoadTrip([FromBody] JoinRoadTripRequest joinRoadTripRequest)
+        public async Task<JoinRoadTripResponse> JoinRoadTrip([FromBody] JoinRoadTripRequest joinRoadTripRequest)
         {
-            throw new NotImplementedException();
+            var entityContext = await roadTripDbContext.FindAsync<RoadTrip>(joinRoadTripRequest.RoadTripId);
+            if(entityContext.JoinedTravelers?.Count >= entityContext.TravelerCapacity
+                || !entityContext.PublishStatus)
+            {
+                return new JoinRoadTripResponse
+                {
+                    Result = false,
+                    Details = "this journey is not available."
+                };
+            }
+            entityContext.JoinedTravelers.Add(new UserRoadTrip()
+            {
+                RoadTripId = joinRoadTripRequest.RoadTripId,
+                UserId = joinRoadTripRequest.JoiningUserID
+            });
+            await roadTripDbContext.SaveChangesAsync();
+            return new JoinRoadTripResponse
+            {
+                Result = true
+            };
         }
 
         [HttpPost]
         [Route("SearchRoadTrip")]
-        public IList<RoadTrip> SearchRoadTrip([FromBody] SearchRoadTripRequest searchRoadTripRequest)
+        public async Task<IList<RoadTrip>> SearchRoadTrip([FromBody] SearchRoadTripRequest searchRoadTripRequest)
         {
-            throw new NotImplementedException();
+            return await roadTripDbContext.RoadTrips.Where(roadTrip => 
+                roadTrip.Source == searchRoadTripRequest.Source 
+                || roadTrip.Destination == searchRoadTripRequest.Destination)
+                .ToListAsync();
         }
     }
 }
