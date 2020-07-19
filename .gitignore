@@ -338,3 +338,6 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+/AdessoRideShareApi/TestDatabase.db
+/AdessoRideShareApi/TestDatabase.db-shm
+/AdessoRideShareApi/TestDatabase.db-wal

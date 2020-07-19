@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AdessoRideShareApi.Model
 {
@@ -10,7 +11,8 @@ namespace AdessoRideShareApi.Model
     public class RoadTrip
     {
         [Key]
-        public long Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid Id { get; set; }
         [Required]
         public User User { get; set; }
         [Required]
@@ -21,7 +23,7 @@ namespace AdessoRideShareApi.Model
         public DateTime TripDateTime { get; set; }
         [Required]
         public int TravelerCapacity { get; set; }
-        public List<Guid> JoinedTravelers { get; set; }
+        public ICollection<UserRoadTrip> JoinedTravelers { get; set; }
         public string Details { get; set; }
         public bool PublishStatus { get; set; }
 

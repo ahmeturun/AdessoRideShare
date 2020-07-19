@@ -1,8 +1,11 @@
-﻿using AdessoRideShareApi.Dto;
+﻿using AdessoRideShareApi.DbContexts;
+using AdessoRideShareApi.Dto;
 using AdessoRideShareApi.Model;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AdessoRideShareApi.Controllers
 {
@@ -10,11 +13,18 @@ namespace AdessoRideShareApi.Controllers
     [ApiController]
     public class TravelInformationController : ControllerBase
     {
+        private readonly RoadTripDbContext roadTripDbContext;
+
+        public TravelInformationController(RoadTripDbContext roadTripDbContext)
+        {
+            this.roadTripDbContext = roadTripDbContext;
+        }
+
         [HttpGet]
         [Route("GetAllRoadTrips")]
-        public IList<RoadTrip> GetAllRoadTrips()
+        public async Task<IList<RoadTrip>> GetAllRoadTrips()
         {
-            throw new NotImplementedException();
+            return await roadTripDbContext.RoadTrips.ToListAsync();
         }
         [HttpPost]
         [Route("AddRoadTrip")]

@@ -1,8 +1,11 @@
+using AdessoRideShareApi.DbContexts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Reflection;
 
 namespace AdessoRideShareApi
 {
@@ -18,6 +21,13 @@ namespace AdessoRideShareApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<RoadTripDbContext>(options =>
+            {
+                options.UseSqlite("Filename=TestDatabase.db", options =>
+                {
+                    options.MigrationsAssembly(Assembly.GetExecutingAssembly().FullName);
+                });
+            });
             services.AddControllers();
         }
 
