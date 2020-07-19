@@ -15,10 +15,13 @@ namespace AdessoRideShareApi.Controllers
     public class TravelInformationController : ControllerBase
     {
         private readonly RoadTripDbContext roadTripDbContext;
+        private readonly SearchPathService searchPathService;
 
-        public TravelInformationController(RoadTripDbContext roadTripDbContext)
+        public TravelInformationController(RoadTripDbContext roadTripDbContext,
+            SearchPathService searchPathService)
         {
             this.roadTripDbContext = roadTripDbContext;
+            this.searchPathService = searchPathService;
         }
 
         [HttpGet]
@@ -80,6 +83,14 @@ namespace AdessoRideShareApi.Controllers
                 || roadTrip.Destination == searchRoadTripRequest.Destination)
                 && roadTrip.PublishStatus)
                 .ToListAsync();
+        }
+
+
+        [HttpPost]
+        [Route("SearchRoadTripForCountry")]
+        public async Task<IList<RoadTrip>> SearchRoadTripForCountry([FromBody] SearchRoadTripRequest searchRoadTripRequest)
+        {
+            return await searchPathService.SearchPathsInCountry(searchRoadTripRequest);
         }
     }
 }

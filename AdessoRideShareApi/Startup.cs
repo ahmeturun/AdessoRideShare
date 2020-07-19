@@ -29,6 +29,7 @@ namespace AdessoRideShareApi
                 });
                 options.EnableSensitiveDataLogging();
             });
+            services.AddTransient<SearchPathService>();
             services.AddControllers();
         }
 

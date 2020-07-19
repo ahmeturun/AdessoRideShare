@@ -61,6 +61,16 @@ namespace AdessoRideShareApi
                         Details = "going fro point foo to point bar.",
                         PublishStatus = false
                     });
+                    roadTripDbContext.RoadTrips.Add(new Model.RoadTrip
+                    {
+                        User = someUser,
+                        Source = new Model.Location { Latitude = 0, Longtitude = 0 },
+                        Destination = new Model.Location { Latitude = 200, Longtitude = 200 },
+                        TripDateTime = DateTime.UtcNow,
+                        TravelerCapacity = 3,
+                        Details = "going fro point foo to point bar.",
+                        PublishStatus = false
+                    });
                 }
                 roadTripDbContext.SaveChanges();
 
