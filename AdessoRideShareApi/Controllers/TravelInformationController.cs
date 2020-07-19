@@ -76,8 +76,9 @@ namespace AdessoRideShareApi.Controllers
         public async Task<IList<RoadTrip>> SearchRoadTrip([FromBody] SearchRoadTripRequest searchRoadTripRequest)
         {
             return await roadTripDbContext.RoadTrips.Where(roadTrip => 
-                roadTrip.Source == searchRoadTripRequest.Source 
+                (roadTrip.Source == searchRoadTripRequest.Source 
                 || roadTrip.Destination == searchRoadTripRequest.Destination)
+                && roadTrip.PublishStatus)
                 .ToListAsync();
         }
     }
