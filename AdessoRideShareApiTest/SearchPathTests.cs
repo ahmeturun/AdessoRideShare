@@ -56,7 +56,7 @@ namespace AdessoRideShareApiTest
                 Destination = new Location { Latitude = 250, Longtitude = 250 }
             });
 
-            Assert.Pass();
+            Assert.IsTrue(result.Count == 2);
         }
 
         private void AddInitialRoadTrips(RoadTripDbContext roadTripDbContext)
@@ -79,7 +79,7 @@ namespace AdessoRideShareApiTest
                     TripDateTime = DateTime.UtcNow,
                     TravelerCapacity = 3,
                     Details = "going fro point foo to point bar.",
-                    PublishStatus = false
+                    PublishStatus = true
                 });
             }
             roadTripDbContext.SaveChanges();
